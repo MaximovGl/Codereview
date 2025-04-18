@@ -4,6 +4,6 @@
 #include <string>
 #include <vector>
 
-int intcheck(const std::string& prompt);
+int Intcheck(const std::string& prompt);
 
 #endif // COUNT_H
