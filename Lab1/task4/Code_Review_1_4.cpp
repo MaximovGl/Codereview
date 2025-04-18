@@ -14,7 +14,7 @@
 using namespace std;
 
 //FIXME нет проверки водимого выражения
-bool exp_check(const string& exp) {
+bool Exp_check(const string& exp) {
 	int parenthesis_balance = 0;
 	for (char c : exp) {
 		if (!isdigit(c) && c != 'M' && c != 'm' && c != ',' && c != '(' && c != ')'){
@@ -41,7 +41,7 @@ bool exp_check(const string& exp) {
 
 
 //FIXME скобки
-int num(const string& exp, size_t& pos){
+int Num(const string& exp, size_t& pos){
 	int number = 0;
 	while (pos < exp.length() && exp[pos] >= '0' && exp[pos] <= '9') {
 		number = number * 10 + (exp[pos] - '0');
@@ -51,9 +51,9 @@ int num(const string& exp, size_t& pos){
 }
 
 //FIXME скобки
-int calc(const string& exp, size_t& pos){
+int Calc(const string& exp, size_t& pos){
 	if (exp[pos] >= '0' && exp[pos] <= '9') {
-		return num(exp, pos);
+		return Num(exp, pos);
 	}
 
 	if (exp[pos] == 'M' || exp[pos] == 'm'){
@@ -68,7 +68,7 @@ int calc(const string& exp, size_t& pos){
 		}
 		pos++;
 
-		int left = calc(exp, pos);
+		int left = Calc(exp, pos);
 
 		// пропускаю ,
 		while (pos < exp.length() && exp[pos] != ','){
@@ -76,7 +76,7 @@ int calc(const string& exp, size_t& pos){
 		}
 		pos++;
 
-		int right = calc(exp, pos);
+		int right = Calc(exp, pos);
 
 		// пропускаю )
 		while (pos < exp.length() && exp[pos] != ')'){
@@ -101,7 +101,7 @@ int calc(const string& exp, size_t& pos){
 
 	if (exp[pos] == '(') {
 		pos++; // Пропускаем '('
-		int result = calc(exp, pos); // продолжаем вычислять уже внутреннее выражение
+		int result = Calc(exp, pos); // продолжаем вычислять уже внутреннее выражение
 		if (exp[pos] != ')') {
 			cout << "Ожидается закрывающая скобка";
 		}
@@ -150,10 +150,10 @@ int main(){
 	if (exp.empty()) {
 		cerr << "Ошибка: Введена пустая строка." << endl;
 	}
-	exp_check(exp);
+	Exp_check(exp);
 
 	size_t pos = 0;
-	int result = calc(exp, pos);
+	int result = Calc(exp, pos);
 	cout << endl;
 	cout << "Полученный результат равен: ";
 	cout << result << " ";
