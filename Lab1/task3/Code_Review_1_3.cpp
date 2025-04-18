@@ -11,7 +11,7 @@
 
 using namespace std;
 
-int intcheck(const string& prompt) {
+int Intcheck(const string& prompt) {
     int value = 0;
     while (true) {
         cout << prompt;
@@ -68,8 +68,8 @@ int main() {
     //int K, N;
 
 
-    int basis = intcheck("Введите систему счисления: ");
-    int dig_in_num = intcheck("Введите кол-во цифр в числе: ");
+    int basis = Intcheck("Введите систему счисления: ");
+    int dig_in_num = Intcheck("Введите кол-во цифр в числе: ");
     
 
     //FIXME однобуквенные переменные
