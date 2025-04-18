@@ -87,10 +87,7 @@ int main() {
     for (int curr_art = 1; curr_art <= art_amount; curr_art++) {  //проходим по всем  артефактам
         for (int curr_weight = 1; curr_weight <= max_weight; curr_weight++) { //Проходим по всем весам от 1 до max.
             if (curr_weight >= weights[curr_art] && weight_tax[curr_art - 1][curr_weight - weights[curr_art]] != 2147483647) { 
-                //Если нынешний вес >= весу всех артефактов K и минимальный налог для предыдущего набора
-                //(сверху) не равен 2147483647 то
                 weight_tax[curr_art][curr_weight] = min(weight_tax[curr_art - 1][curr_weight], weight_tax[curr_art - 1][curr_weight - weights[curr_art]] + taxes[curr_art]);
-                //Определяем минимальный налог для данного набора артефактов данного веса
             }
             else {
                 weight_tax[curr_art][curr_weight] = weight_tax[curr_art - 1][curr_weight];
@@ -101,7 +98,6 @@ int main() {
     int min_tax = INT_MAX;
     int total_weight = 0;
     
-    //Ищем минимальный налог среди всех весов > необходимого.
     for (int curr_weight = required_weight + 1; curr_weight <= max_weight; curr_weight++) {
         if (weight_tax[art_amount][curr_weight] < min_tax) {
             min_tax = weight_tax[art_amount][curr_weight];
