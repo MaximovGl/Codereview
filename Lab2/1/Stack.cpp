@@ -1,91 +1,57 @@
-#include "Stack.h"
-#include <iostream>
-#include <cstdlib>
-#include <limits> 
+#include "stack.h"
 
 using namespace std;
 
-Node::Node(int d) :x(d), next(nullptr) {}
+Stack::Stack() : p1(nullptr), counter(0) {}
 
-Stack::Stack() : top(nullptr) {}
-
-void Stack::Push(int d) {
-    Node* newNode = new Node(d);
-    newNode->next = top;
-    top = newNode;
+Stack::~Stack() {
+  while (p1 != nullptr) {
+    Node* temp = p1;
+    p1 = p1->next;
+    delete temp;
+  }
+  counter = 0;
 }
 
-void Stack::Show() const {
-    Node* current = top;
-    while (current != nullptr) {
-        cout << current->x << " ";
-        current = current->next;
-    }
-    cout << endl;
+void Stack::AddNode(int new_node_value) {
+  Node* new_node = new Node(new_node_value);
+  new_node->next = p1;
+  p1 = new_node;
+  ++counter;
 }
 
-void Stack::ShowAddress() const {
-    cout << "Адрес вершины стека: " << top << endl;
+void Stack::DeleteTop() {
+  if (p1 == nullptr) {
+    cout << "РЎС‚РµРє РїСѓСЃС‚, СѓРґР°Р»СЏС‚СЊ РЅРµС‡РµРіРѕ." << endl;
+    return;
+  }
+
+  Node* temporary_node = p1;
+  int d = p1->data;
+  p1 = p1->next;
+  --counter;
+
+  cout << "РџРµСЂРІС‹Р№ СЌР»РµРјРµРЅС‚ СЃС‚РµРєР°: " << d << endl;
+  cout << "РђРґСЂРµСЃ РЅРѕРІРѕР№ РІРµСЂС€РёРЅС‹ p1 РїРѕСЃР»Рµ РёР·РІР»РµС‡РµРЅРёСЏ 1 СЌР»РµРјРµРЅС‚Р°: " << p1 << endl;
+
+  if (p1 != nullptr) {
+    cout << "Р—РЅР°С‡РµРЅРёРµ РЅРѕРІРѕР№ РІРµСЂС€РёРЅС‹ p1: " << p1->data << endl;
+  } else {
+    cout << "РЎС‚РµРє С‚РµРїРµСЂСЊ РїСѓСЃС‚." << endl;
+  }
+
+  delete temporary_node;
 }
 
-int Stack::GetTopValue() const {
-    if (top != nullptr) {
-        return top->x;
-    }
-    cerr << "Ошибка: попытка получить значение из пустого стека!" << endl;
-    exit(EXIT_FAILURE);
-}
-
-bool Stack::IsEmpty() const {
-    return top == nullptr;
-}
-
-int Read_int() {
-    int m = 0;
-    while (!(cin >> m)) {
-        cerr << "Ошибка ввода! Пожалуйста, введите целое число: ";
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    }
-    return m;
-}
-
-void RunStackOperations(Stack& stack) {
-    int N = 0;
-    int n = 0;
-
-    cout << "Сколько чисел вы хотите, чтобы было в стеке? ";
-    N = Read_int();
-
-    for (int i = 0; i < N; ++i) {
-        cout << "Введите число " << i + 1 << ": ";
-        while (!(cin >> n)) {
-            cerr << "Ошибка ввода! Пожалуйста, введите целое число: ";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-        stack.Push(n);
-    }
-
-    stack.ShowAddress();
-
-    cout << "Элементы в стеке: ";
-    stack.Show();
-
-    int D = 0;
-
-    cout << "Введите значение D для добавления в стек: ";
-    D = Read_int();
-    stack.Push(D);
-
-    cout << "Элементы в новом стеке: ";
-    stack.Show();
-    stack.ShowAddress();
-
-    if (!stack.IsEmpty()) {
-        cout << "Значение новой вершины: " << stack.GetTopValue() << endl;
-    }
-    else {
-        cout << "Стек пуст!" << endl;
-    }
+void Stack::ShowStack() const {
+  Node* temporary_node = p1;
+  if (temporary_node == nullptr) {
+    cout << "РЎС‚РµРє РїСѓСЃС‚." << endl;
+    return;
+  }
+  cout << "РўРµРєСѓС‰РёР№ СЃС‚РµРє (СЃРІРµСЂС…Сѓ РІРЅРёР·):" << endl;
+  while (temporary_node != nullptr) {
+    cout << temporary_node->data << endl;
+    temporary_node = temporary_node->next;
+  }
 }
