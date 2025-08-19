@@ -11,16 +11,30 @@
 его вершину (для пустого стека данный указатель полагается равным nullptr). Значением
 элемента стека считается значение его поля Data*/
 
-#include "Stack.h"
 #include <iostream>
+#include "stack.h"
 
 using namespace std;
 
 int main() {
-    setlocale(LC_ALL, "Russian");
+  setlocale(LC_ALL, "Russian");
 
-    Stack stack;
-    RunStackOperations(stack); 
+  Stack stack;
 
-    return 0;
+  cout << "Введите количество элементов стека: ";
+  int stack_size;
+  cin >> stack_size;
+
+  for (int i = 0; i < stack_size; ++i) {
+    cout << "Введите элемент стека: ";
+    int node_value;
+    cin >> node_value;
+    stack.add_node(node_value);
+  }
+
+  stack.ShowStack();
+
+  stack.DeleteTop();
+
+  return 0;
 }
