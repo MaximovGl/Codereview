@@ -1,4 +1,4 @@
-﻿/*Дано число D и указатель P1 на вершину непустого стека.
+/*Дано число D и указатель P1 на вершину непустого стека.
 Добавить элемент со значением D в стек и вывести адрес P2 новой вершины стека.
 
 Для каждой динамической структуры должен быть предусмотрен стандартный набор методов -
@@ -17,24 +17,24 @@
 using namespace std;
 
 int main() {
-  setlocale(LC_ALL, "Russian");
+    setlocale(LC_ALL, "Russian");
 
-  Stack stack;
+    Stack stack;
 
-  cout << "Введите количество элементов стека: ";
-  int stack_size;
-  cin >> stack_size;
+    cout << "Введите количество элементов стека: ";
+    int stack_size;
+    cin >> stack_size;
 
-  for (int i = 0; i < stack_size; ++i) {
-    cout << "Введите элемент стека: ";
-    int node_value;
-    cin >> node_value;
-    stack.add_node(node_value);
-  }
+    for (int i = 0; i < stack_size; ++i) {
+        cout << "Введите элемент стека: ";
+        int node_value;
+        cin >> node_value;
+        stack.add_node(node_value);
+    }
 
-  stack.ShowStack();
+    stack.show_stack();
 
-  stack.DeleteTop();
+    stack.delete_top();
 
-  return 0;
+    return 0;
 }
