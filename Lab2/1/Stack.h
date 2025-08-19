@@ -1,27 +1,26 @@
 #ifndef STACK_H
 #define STACK_H
 
-class Node {
-public:
-    int x;
-    Node* next;
-    Node(int d);
-};
+#include <iostream>
 
 class Stack {
 private:
-    Node* top;
+  struct Node {
+    int data;
+    Node* next;
+    Node(int value) : data(value), next(nullptr) {}
+  };
+
+  Node* p1;
+  int counter;
 
 public:
-    Stack();
-    void Push(int d);
-    void Show() const;
-    void ShowAddress() const;
-    int GetTopValue() const;
-    bool IsEmpty() const;
-};
+  Stack();
+  ~Stack();
 
-int Read_int();
-void RunStackOperations(Stack& stack);  
+  void add_node(int new_node_value);
+  void delete_top();
+  void show_stack() const;
+};
 
 #endif 
