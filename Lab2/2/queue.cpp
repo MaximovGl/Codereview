@@ -1,142 +1,105 @@
 #include "queue.h"
-#include <iostream>
-#include <limits>
 
-using namespace std;
-
-void Add(int data, PNode& Head, PNode& Tail) {
-    PNode Temp;
-    if (Head == nullptr) {
-        Head = new Node;
-        Tail = Head;
-        Head->next = nullptr;
+void add_node(int data, PNode& head, PNode& tail) {
+    PNode temporary_node;
+    if (head == NULL) {
+        head = new Node;
+        tail = head;
+        head->setNext(NULL);
     }
     else {
-        Temp = new Node;
-        Tail->next = Temp;
-        Tail = Temp;
-        Tail->next = nullptr;
+        temporary_node = new Node;
+        tail->setNext(temporary_node);
+        tail = temporary_node;
+        tail->setNext(NULL);
     }
-    Tail->data = data;
+    tail->setData(data);
 }
 
-int Show_Before(PNode head) {
-    if (head == nullptr) {
-        cerr << "Ошибка: попытка показать пустую очередь!" << endl;
-        return 1;
+void show_initial_queue(PNode head) {
+    PNode temporary_node = head;
+    cout << endl << "РСЃС…РѕРґРЅС‹Р№ Р°РґСЂРµСЃ РїРµСЂРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р°: " << head << " " << head->getData();
+    cout << endl << "РСЃС…РѕРґРЅР°СЏ РѕС‡РµСЂРµРґСЊ: ";
+    while (temporary_node != nullptr) {
+        cout << temporary_node->getData() << " ";
+        temporary_node = temporary_node->getNext();
     }
-
-    PNode temp = head;
-    cout << endl << "Исходный адрес первого элемента: " << head << " " << head->data;
-
-    cout << endl << "Исходная очередь: ";
-    while (temp != nullptr) {
-        cout << temp->data << " ";
-        temp = temp->next;
-    }
-
     PNode last = head;
-    while (last->next != nullptr) {
-        last = last->next;
+    while (last->getNext() != nullptr) {
+        last = last->getNext();
     }
-    cout << endl << "Исходный адрес последнего элемента: " << last << " " << last->data << endl;
-    return 0;
+    cout << endl << "РСЃС…РѕРґРЅС‹Р№ Р°РґСЂРµСЃ РїРѕСЃР»РµРґРЅРµРіРѕ СЌР»РµРјРµРЅС‚Р°: " << last << " " << last->getData() << endl;
 }
 
-int Delete(int m, PNode& Head) {
-    if (m < 0) {
-        cerr << "Ошибка: количество удаляемых элементов не может быть отрицательным!" << endl;
-        return 1;
+void delete_n_elements(int n, PNode& head) {
+    PNode temporary_node;
+    for (int i = 0; i < n; i++) {
+        if (head == nullptr)
+            break;
+        temporary_node = head;
+        cout << temporary_node->getData() << " " << temporary_node->getNext() << " ";
+        head = head->getNext();
+        delete temporary_node;
+        cout << endl;
     }
-    if (Head == nullptr) {
-        return 0;
-    }
-
-    PNode temp;
-    for (int i = 0; i < m && Head != nullptr; ++i) {
-        temp = Head;
-        Head = Head->next;
-        delete temp;
-    }
-    return 0;
+    cout << endl;
 }
 
-void Show_After(PNode head) {
+void show_new_queue(PNode head) {
+    PNode temporary_node = nullptr;
+    PNode temp2 = head;
     if (head == nullptr) {
-        cout << "Очередь после удаления элементов оказалась пустой" << endl;
-        cout << "Начало очереди: nullptr" << endl;
-        cout << "Конец очереди: nullptr" << endl;
+        cout << "РћС‡РµСЂРµРґСЊ РїРѕСЃР»Рµ СѓРґР°Р»РµРЅРёСЏ СЌР»РµРјРµРЅС‚РѕРІ РѕРєР°Р·Р°Р»Р°СЃСЊ РїСѓСЃС‚РѕР№" << endl;
+        int* pointer = nullptr;
+        cout << "РќР°С‡Р°Р»Рѕ РѕС‡РµСЂРµРґРё: " << pointer << endl;
+        cout << "РљРѕРЅРµС† РѕС‡РµСЂРµРґРё: " << pointer << endl;
     }
     else {
-        PNode temp2 = head;
-        cout << "Новое начало очереди: " << temp2 << " " << temp2->data << endl;
-        cout << "Оставшиеся элементы очереди: ";
-        PNode current = head;
-        PNode last = nullptr;
-        while (current != nullptr) {
-            last = current;
-            cout << current->data << " ";
-            current = current->next;
+        cout << "РќРѕРІРѕРµ РЅР°С‡Р°Р»Рѕ РѕС‡РµСЂРµРґРё: " << temp2 << " " << temp2->getData() << endl;
+        cout << "РћСЃС‚Р°РІС€РёРµСЃСЏ СЌР»РµРјРµРЅС‚С‹ РѕС‡РµСЂРµРґРё: ";
+        while (head != nullptr) {
+            temporary_node = head;
+            cout << temporary_node->getData() << " ";
+            head = head->getNext();
         }
-        cout << endl << "Новый конец очереди: " << last << " " << last->data << endl;
+        cout << endl << "РќРѕРІС‹Р№ РєРѕРЅРµС† РѕС‡РµСЂРµРґРё: " << temporary_node << " " << temporary_node->getData() << endl;
     }
 }
 
-int Read_int() {
-    int m = 0;
-    while (!(cin >> m)) {
-        cerr << "Ошибка ввода! Пожалуйста, введите целое число: ";
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    }
-    return m;
-}
-
-int RunQueueOperations() {
-    int m = 0;
-    int n = 0;
+PNode input(int& n) {
+    int m;
     PNode p1 = nullptr;
     PNode p2 = nullptr;
-
-    cout << "Добро пожаловать!" << endl;
-    cout << "Перед нами новая задача:" << endl;
-    cout << "Дано число N (> 0) и указатели P1 и P2 на начало и конец непустой очереди." << endl;
-    cout << "Извлечь из очереди N начальных элементов" << endl;
+    cout << "Р”РѕР±СЂРѕ РїРѕР¶Р°Р»РѕРІР°С‚СЊ!" << endl;
+    cout << "РџРµСЂРµРґ РЅР°РјРё РЅРѕРІР°СЏ Р·Р°РґР°С‡Р°:" << endl;
+    cout << "Р”Р°РЅРѕ С‡РёСЃР»Рѕ N (> 0) Рё СѓРєР°Р·Р°С‚РµР»Рё P1 Рё P2 РЅР° РЅР°С‡Р°Р»Рѕ Рё РєРѕРЅРµС† РЅРµРїСѓСЃС‚РѕР№ РѕС‡РµСЂРµРґРё." << endl;
+    cout << "РР·РІР»РµС‡СЊ РёР· РѕС‡РµСЂРµРґРё N РЅР°С‡Р°Р»СЊРЅС‹С… СЌР»РµРјРµРЅС‚РѕРІ" << endl;
     cout << "---------------------------------------------------------" << endl;
-    cout << "Вам необходимо ввести количество элементов очереди и их значения через пробел " << endl;
-    cout << "Мы выведем новые адреса начала и конца очереди, извлечем n значений и выведем на экран" << endl;
+    cout << "Р’Р°Рј РЅРµРѕР±С…РѕРґРёРјРѕ РІРІРµСЃС‚Рё РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РѕС‡РµСЂРµРґРё Рё РёС… Р·РЅР°С‡РµРЅРёСЏ С‡РµСЂРµР· РїСЂРѕР±РµР» " << endl;
+    cout << "РњС‹ РІС‹РІРµРґРµРј РЅРѕРІС‹Рµ Р°РґСЂРµСЃР° РЅР°С‡Р°Р»Р° Рё РєРѕРЅС†Р° РѕС‡РµСЂРµРґРё, РёР·РІР»РµС‡РµРј n Р·РЅР°С‡РµРЅРёР№ Рё РІС‹РІРµРґРµРј РЅР° СЌРєСЂР°РЅ" << endl;
     cout << endl << endl << "----------------------------------------------------------------------------" << endl;
-    cout << "Введите число m - количество элементов очереди: ";
-    m = Read_int();
-
-    if (m <= 0) {
-        cerr << "Ошибка: количество элементов должно быть положительным!" << endl;
-        return 1;
+    cout << "Р’РІРµРґРёС‚Рµ С‡РёСЃР»Рѕ m - РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РѕС‡РµСЂРµРґРё: ";
+    cin >> m;
+    if (cin.fail() || m <= 0) {
+        cerr << "РћС€РёР±РєР° РІРІРѕРґР°: m РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РїРѕР»РѕР¶РёС‚РµР»СЊРЅС‹Рј С†РµР»С‹Рј С‡РёСЃР»РѕРј." << endl;
+        exit(1);
     }
-
-    cout << endl << "Введите " << m << " значений элементов очереди через пробел: ";
-    for (int i = 0; i < m; ++i) {
-        int j = Read_int();
-        Add(j, p1, p2);
+    cout << endl << "Р’РІРµРґРёС‚Рµ " << m << " Р·РЅР°С‡РµРЅРёР№ СЌР»РµРјРµРЅС‚РѕРІ РѕС‡РµСЂРµРґРё С‡РµСЂРµР· РїСЂРѕР±РµР» ";
+    for (int i = 0; i < m; i++) {
+        int j;
+        cin >> j;
+        if (cin.fail()) {
+            cerr << "РћС€РёР±РєР° РІРІРѕРґР°: СЌР»РµРјРµРЅС‚ РѕС‡РµСЂРµРґРё РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ С†РµР»С‹Рј С‡РёСЃР»РѕРј." << endl;
+            exit(1);
+        }
+        add_node(j, p1, p2);
     }
-
-    cout << endl << endl << "Введите число n (n>0) - количество элементов" << endl;
-    cout << "очереди, которые нужно извлечь из очереди: ";
-    n = Read_int();
-
-    if (n <= 0) {
-        cerr << "Ошибка: количество извлекаемых элементов должно быть положительным!" << endl;
-        return 1;
+    cout << endl << endl << "Р’РІРµРґРёС‚Рµ С‡РёСЃР»Рѕ n(n>0) - РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ" << endl;
+    cout << "РѕС‡РµСЂРµРґРё, РєРѕС‚РѕСЂС‹Рµ РЅСѓР¶РЅРѕ РёР·РІР»РµС‡СЊ РёР· РѕС‡РµСЂРµРґРё: ";
+    cin >> n;
+    if (cin.fail() || n <= 0) {
+        cerr << "РћС€РёР±РєР° РІРІРѕРґР°: n РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РїРѕР»РѕР¶РёС‚РµР»СЊРЅС‹Рј С†РµР»С‹Рј С‡РёСЃР»РѕРј." << endl;
+        exit(1);
     }
-
-    if (int error = Show_Before(p1)) {
-        return error;
-    }
-
-    if (int error = Delete(n, p1)) {
-        return error;
-    }
-
-    Show_After(p1);
-    return 0;
+    return p1;
 }
