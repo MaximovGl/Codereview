@@ -115,10 +115,8 @@ public class Main {
     private static int validateIntInput() {
         Scanner scanner = new Scanner(System.in);
         if (scanner.hasNextInt()) {
-            scanner.close();
             return scanner.nextInt();
         } else {
-            scanner.close();
             System.out.println("Вы ввели не целое число.");
             return 0;
         }
@@ -137,11 +135,9 @@ public class Main {
     private static String validateStringInput() {
         Scanner scanner = new Scanner(System.in);
         if (scanner.hasNextLine()) {
-            scanner.close();
             return scanner.nextLine();
 
         } else {
-            scanner.close();
             System.out.println("Ошибка ввода строки.");
             return "";
         }
