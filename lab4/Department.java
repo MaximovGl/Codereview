@@ -18,58 +18,69 @@
 import java.util.ArrayList;
 
 public class Department {
-    private ArrayList<String> workers = new ArrayList<>();
+    private ArrayList<Worker> workers;
     private String departmentName;
-    private String managerName;
+    private Worker manager;
+
+    public Department(String name, Worker manager) {
+        this.workers = new ArrayList<>();
+        this.departmentName = name;
+        setManager(manager);
+    }
 
     public Department(String name) {
+        this.workers = new ArrayList<>();
         this.departmentName = name;
     }
 
-    public void addWorker(String workerName) {
-        workers.add(workerName);
+    public String getName() {
+        return departmentName;
     }
 
-    public void assignManager(String name) {
-        for (int i = 0; i < workers.size(); i++) {
-            if (name.equals(workers.get(i))) {
-                this.managerName = name;
-                break;
-            }
+    public String getManagerName() {
+        return manager.getName();
+    }
+
+    public void setName(String name) {
+        this.departmentName = name;
+    }
+
+    public void setManager(Worker manager) {
+        this.manager = manager;
+        if (!workers.contains(manager)) {
+            manager.assignToDepartment(this);
         }
     }
 
-    public String checkEmployee(String name) {
-        if (workers.isEmpty()) {
-            return "В отделе нет сотрудников.";
-        }
-        StringBuilder employeeList = new StringBuilder(workers.get(0));
-        boolean found = false;
-        for (int i = 0; i < workers.size(); i++) {
-            employeeList.append(", ").append(workers.get(i));
-            if (name.equals(workers.get(i))) {
-                found = true;
-            }
-        }
-        if (found) {
-            return "Список сотрудников департамента: " + employeeList + ".";
-        } else {
-            return "В данном отделе такого сотрудника нет, попробуйте проверить другой отдел.";
-        }
+    public void addWorker(Worker worker) {
+        workers.add(worker);
+    }
+
+    public boolean isManager(Worker worker) {
+        return worker.equals(manager);
     }
 
     public String toString() {
-        StringBuilder employeeList = new StringBuilder(workers.get(0));
-        for (int i = 1; i < workers.size(); i++) {
-            employeeList.append(", ").append(workers.get(i));
-        }
+        if (!workers.isEmpty()) {
+            StringBuilder employeeList = new StringBuilder(workers.get(0).getName());
+            for (int i = 1; i < workers.size(); i++) {
+                employeeList.append(", ").append(workers.get(i).getName());
+            }
 
-        return "Название департамента: "
-                + departmentName
-                + ". Начальник департамента: "
-                + managerName
-                + ". Список сотрудников департамента: "
-                + employeeList
-                + ".";
+            return "Название департамента: "
+                    + departmentName
+                    + ". Начальник департамента: "
+                    + manager.getName()
+                    + ". Список сотрудников департамента: "
+                    + employeeList
+                    + ".";
+        }
+        else
+            return "Название департамента: "
+                    + departmentName
+                    + ". Начальник департамента: "
+                    + manager.getName()
+                    + ". Список сотрудников департамента: "
+                    + ".";
     }
 }
