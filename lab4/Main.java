@@ -22,13 +22,13 @@ public class Main {
         switch (choice) {
             case 1:
                 System.out.println("Введите время в секундах(целым числом):");
-                int seconds = validateIntInput();
+                int seconds = Validate.intInput();
                 Time time1 = new Time(seconds);
                 System.out.println("Введите время в секундах(целым числом):");
-                seconds = validateIntInput();
+                seconds = Validate.intInput();
                 Time time2 = new Time(seconds);
                 System.out.println("Введите время в секундах(целым числом):");
-                seconds = validateIntInput();
+                seconds = Validate.intInput();
                 Time time3 = new Time(seconds);
                 System.out.println(time1);
                 System.out.println(time2);
@@ -36,13 +36,13 @@ public class Main {
                 break;
             case 2:
                 System.out.println("Введите число этажей дома(целым положительным числом):");
-                int floors = validateNonNegative(validateIntInput());
+                int floors = Validate.nonNegative(Validate.intInput());
                 House house1 = new House(floors);
                 System.out.println("Введите число этажей дома(целым положительным числом):");
-                floors = validateNonNegative(validateIntInput());
+                floors = Validate.nonNegative(Validate.intInput());
                 House house2 = new House(floors);
                 System.out.println("Введите число этажей дома(целым положительным числом):");
-                floors = validateNonNegative(validateIntInput());
+                floors = Validate.nonNegative(Validate.intInput());
                 House house3 = new House(floors);
                 System.out.println(house1);
                 System.out.println(house2);
@@ -54,92 +54,28 @@ public class Main {
                 Department itDepartment = new Department(input);
                 System.out.println("Введите имя сотрудника: ");
                 input = scanner.next();
-                itDepartment.addWorker(input);
+                Worker first = new Worker(input, itDepartment);
                 System.out.println("Введите имя сотрудника: ");
                 input = scanner.next();
-                itDepartment.addWorker(input);
+                Worker second = new Worker(input, itDepartment);
                 System.out.println("Введите имя сотрудника: ");
                 input = scanner.next();
-                itDepartment.addWorker(input);
+                Worker third = new Worker(input, itDepartment);
                 System.out.println("Введите имя начальника: ");
-                input = scanner.next();
-                itDepartment.assignManager(input);
-                System.out.println(itDepartment);
-                break;
-            case 4:
-                System.out.println("Введите название департамента:");
-                input = scanner.next();
-                Department tiDepartment = new Department(input);
-                System.out.println("Введите имя сотрудника: ");
-                input = scanner.next();
-                tiDepartment.addWorker(input);
-                System.out.println("Введите имя сотрудника: ");
-                input = scanner.next();
-                tiDepartment.addWorker(input);
-                System.out.println("Введите имя сотрудника: ");
-                input = scanner.next();
-                tiDepartment.addWorker(input);
-                System.out.println("Введите имя сотрудника: ");
-                input = scanner.next();
-                System.out.println(tiDepartment.checkEmployee(input));
-                break;
-            case 5:
-                int Floors;
-                System.out.println("Введите число этажей дома(целым положительным числом):");
-                Floors = validateNonNegative(validateIntInput());
-                House house4 = new House(Floors);
-                System.out.println("Введите число этажей дома(целым положительным числом):");
-                Floors = validateNonNegative(validateIntInput());
-                House house5 = new House(Floors);
-                System.out.println("Введите число этажей дома(целым положительным числом):");
-                Floors = validateNonNegative(validateIntInput());
-                House house6 = new House(Floors);
-                System.out.println(house4);
-                System.out.println(house5);
-                System.out.println(house6);
+                itDepartment.setManager(third);
+                System.out.println(itDepartment.toString());
                 break;
             case 6:
                 System.out.println(
                         "Введите количество патронов в пистолете(целым положительным числом):");
-                int bullets = validateNonNegative(validateIntInput());
+                int bullets = Validate.nonNegative(Validate.intInput());
                 Pistol pistol = new Pistol(bullets);
                 System.out.println(
                         "Введите количество выстрелов из пистолета(целым положительным числом):");
-                int shots = validateNonNegative(validateIntInput());
+                int shots = Validate.nonNegative(Validate.intInput());
                 pistol.shoot(shots);
                 break;
         }
         scanner.close();
-    }
-
-    private static int validateIntInput() {
-        Scanner scanner = new Scanner(System.in);
-        if (scanner.hasNextInt()) {
-            return scanner.nextInt();
-        } else {
-            System.out.println("Вы ввели не целое число.");
-            return 0;
-        }
-
-    }
-
-    private static int validateNonNegative(int value) {
-        if (value >= 0) {
-            return value;
-        } else {
-            System.out.println("Вы ввели отрицательное число.");
-            return 0;
-        }
-    }
-
-    private static String validateStringInput() {
-        Scanner scanner = new Scanner(System.in);
-        if (scanner.hasNextLine()) {
-            return scanner.nextLine();
-
-        } else {
-            System.out.println("Ошибка ввода строки.");
-            return "";
-        }
     }
 }
