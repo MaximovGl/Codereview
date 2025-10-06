@@ -1,33 +1,29 @@
 #ifndef LIST_H
 #define LIST_H
 
-#include <iostream>
+class SortedList {
+private:
+    struct Node {
+        int data;
+        Node* next;
+        Node(int value) : data(value), next(nullptr) {}
+    };
+    
+    Node* head;
+    Node* tail;
+    int size;
 
-using namespace std;
-
-class Node
-{
 public:
-	int x;
-	Node* next;
-
-	void Add(int data, Node& Head, Node& LastNode) {}
-
-	Node Find(int data, Node& Head) {}
-
-	void Newadd(int data, Node p, Node& Head) {}
-
-	void Show_Before(Node& Head) {}
-
-	void Show_After(Node& Head) {}
-
-	Node Find(Node Head, int data) {}
-
-	void DeleteNode(Node& Head, Node OldNode) {}
+    SortedList();
+    ~SortedList();
+    void append(int value);
+    void insert_sorted(int value);
+    void remove(int value);
+    bool contains(int value) const;
+    void display() const;
+    SortedList create_copy() const;
 };
 
-typedef Node* PNode;
-
-void RunTask();
+void run_task();
 
 #endif
