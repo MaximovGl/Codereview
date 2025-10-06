@@ -11,8 +11,8 @@ private:
         Node(int value) : data(value), next(nullptr) {}
     };
 
-    Node* p1;
-    int counter;
+    Node* top_node;
+    int element_count;
 
 public:
     Stack();
