@@ -1,12 +1,12 @@
+#ifndef CONTAINERS_H
+#define CONTAINERS_H
 
-#pragma once
 #include <list>
 #include <iostream>
 
-using namespace std;
+bool fill_list(std::list<int>& container, int size);
+void print_list(const std::list<int>& container);
+void print_list_reverse(const std::list<int>& container);
+void move_middle_element(std::list<int>& source_list, std::list<int>& destination_list);
 
-bool Input(list<int>& L, int n);
-
-void Print(const list<int> L);
-
-void Splice(list<int>& L1, list<int>& L2);
+#endif
