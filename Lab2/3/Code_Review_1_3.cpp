@@ -13,10 +13,8 @@
 #include "list.h"
 #include <iostream>
 
-using namespace std;
-
 int main() {
-	setlocale(LC_ALL, "Russian");
-	RunTask();
-	return 0;
+    setlocale(LC_ALL, "Russian");
+    run_task();
+    return 0;
 }
