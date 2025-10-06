@@ -39,6 +39,9 @@ bool Queue::is_empty() const {
 }
 
 int Queue::get_front() const {
+    if (front_node == nullptr) {
+        throw std::runtime_error("Queue is empty");
+    }
     return front_node->data;
 }
 
