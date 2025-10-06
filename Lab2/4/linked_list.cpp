@@ -1,189 +1,170 @@
-
-
 #include "linked_list.h"
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <locale>
-#include <cctype> 
+#include <cctype>
 
-using namespace std;
+DoublyLinkedList::DoublyLinkedList() : head(nullptr), tail(nullptr) {}
 
-LinkedList::LinkedList() : head(nullptr) {}
-
-LinkedList::~LinkedList() {
+DoublyLinkedList::~DoublyLinkedList() {
     clear();
 }
 
-void LinkedList::append(int value) {
-    Node* newNode = new Node;
-    newNode->data = value;
-    newNode->prev = nullptr;
-    newNode->next = nullptr;
-
+void DoublyLinkedList::append(int value) {
+    Node* new_node = new Node(value);
+    
     if (head == nullptr) {
-        head = newNode;
-    }
-    else {
-        Node* current = head;
-        while (current->next != nullptr) {
-            current = current->next;
-        }
-        current->next = newNode;
-        newNode->prev = current;
+        head = new_node;
+        tail = new_node;
+    } else {
+        tail->next = new_node;
+        new_node->prev = tail;
+        tail = new_node;
     }
 }
 
-void LinkedList::deleteNode(Node* nodeToDelete) {
-    if (nodeToDelete == nullptr) {
-        cerr << "Îøèáêà: ïîïûòêà óäàëèòü íåñóùåñòâóþùèé óçåë" << endl;
-        return;
-    }
-
-    Node* prevNode = nodeToDelete->prev;
-    Node* nextNode = nodeToDelete->next;
-
-    if (prevNode != nullptr) {
-        prevNode->next = nextNode;
-    }
-    else {
-        head = nextNode;
-    }
-
-    if (nextNode != nullptr) {
-        nextNode->prev = prevNode;
-    }
-
-    delete nodeToDelete;
-}
-
-void LinkedList::print() const {
+bool DoublyLinkedList::remove_value(int value) {
     Node* current = head;
-    cout << "Ñïèñîê: ";
     while (current != nullptr) {
-        cout << current->data << " ";
+        if (current->data == value) {
+            if (current->prev != nullptr) {
+                current->prev->next = current->next;
+            } else {
+                head = current->next;
+            }
+            
+            if (current->next != nullptr) {
+                current->next->prev = current->prev;
+            } else {
+                tail = current->prev;
+            }
+            
+            delete current;
+            return true;
+        }
         current = current->next;
     }
-    cout << endl;
+    return false;
 }
 
-void LinkedList::writeToFileAndClear(const std::string& filename) {
-    ofstream file(filename);
+void DoublyLinkedList::display() const {
+    Node* current = head;
+    std::cout << "Ð¡Ð¿Ð¸ÑÐ¾Ðº: ";
+    while (current != nullptr) {
+        std::cout << current->data << " ";
+        current = current->next;
+    }
+    std::cout << std::endl;
+}
+
+void DoublyLinkedList::write_to_file_and_clear(const std::string& filename) {
+    std::ofstream file(filename);
     if (!file.is_open()) {
-        cerr << "Îøèáêà îòêðûòèÿ ôàéëà!" << endl;
+        std::cerr << "ÐžÑˆÐ¸Ð±ÐºÐ° Ð¾Ñ‚ÐºÑ€Ñ‹Ñ‚Ð¸Ñ Ñ„Ð°Ð¹Ð»Ð°!" << std::endl;
         return;
     }
 
-    Node* current = head;
-    while (current != nullptr && current->next != nullptr) {
-        current = current->next;
-    }
-
-    bool firstElement = true;
+    Node* current = tail;
+    bool first_element = true;
     while (current != nullptr) {
-        if (firstElement) {
+        if (first_element) {
             file << current->data;
-            firstElement = false;
-        }
-        else {
+            first_element = false;
+        } else {
             file << " " << current->data;
         }
-
-        Node* prevNode = current->prev;
-        deleteNode(current);
-        current = prevNode;
+        current = current->prev;
     }
 
     file.close();
-    cout << "Äàííûå çàïèñàíû â ôàéë è ñïèñîê î÷èùåí." << endl;
+    clear();
+    std::cout << "Ð”Ð°Ð½Ð½Ñ‹Ðµ Ð·Ð°Ð¿Ð¸ÑÐ°Ð½Ñ‹ Ð² Ñ„Ð°Ð¹Ð» Ð¸ ÑÐ¿Ð¸ÑÐ¾Ðº Ð¾Ñ‡Ð¸Ñ‰ÐµÐ½." << std::endl;
 }
 
-void LinkedList::clear() {
+void DoublyLinkedList::clear() {
     Node* current = head;
     while (current != nullptr) {
-        Node* nextNode = current->next;
+        Node* next_node = current->next;
         delete current;
-        current = nextNode;
+        current = next_node;
     }
     head = nullptr;
+    tail = nullptr;
 }
 
-int inputNumber() {
-    string input;
+int read_integer_input() {
+    std::string input;
     while (true) {
-        cout << "Ââåäèòå ÷èñëî (èëè '-1' äëÿ çàâåðøåíèÿ): ";
-        cin >> input;
+        std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ‡Ð¸ÑÐ»Ð¾ (Ð¸Ð»Ð¸ '-1' Ð´Ð»Ñ Ð·Ð°Ð²ÐµÑ€ÑˆÐµÐ½Ð¸Ñ): ";
+        std::cin >> input;
 
         if (input == "-1") {
             return -1;
         }
 
-        bool isValid = true;
+        bool is_valid = true;
         int sign = 1;
-        size_t start = 0;
+        size_t start_index = 0;
 
         if (input.empty()) {
-            isValid = false;
-        }
-        else if (input[0] == '-') {
+            is_valid = false;
+        } else if (input[0] == '-') {
             sign = -1;
-            start = 1;
-            if (input.size() == 1) isValid = false;
+            start_index = 1;
+            if (input.size() == 1) is_valid = false;
         }
 
-        for (size_t i = start; i < input.size(); ++i) {
+        for (size_t i = start_index; i < input.size(); ++i) {
             if (!isdigit(input[i])) {
-                isValid = false;
+                is_valid = false;
                 break;
             }
         }
 
-        if (isValid) {
+        if (is_valid) {
             int number = 0;
-            for (size_t i = start; i < input.size(); ++i) {
+            for (size_t i = start_index; i < input.size(); ++i) {
                 number = number * 10 + (input[i] - '0');
             }
             return number * sign;
-        }
-        else {
-            cerr << "Íåêîððåêòíûé ââîä! Èñïîëüçóéòå öèôðû è çíàê '-' â íà÷àëå." << endl;
+        } else {
+            std::cerr << "ÐÐµÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´! Ð˜ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐ¹Ñ‚Ðµ Ñ†Ð¸Ñ„Ñ€Ñ‹ Ð¸ Ð·Ð½Ð°Ðº '-' Ð² Ð½Ð°Ñ‡Ð°Ð»Ðµ." << std::endl;
         }
     }
 }
 
-void printFileContents(const std::string& filename) {
-    ifstream file(filename);
+void display_file_contents(const std::string& filename) {
+    std::ifstream file(filename);
     if (!file.is_open()) {
-        cerr << "Îøèáêà ïðè îòêðûòèè ôàéëà äëÿ ÷òåíèÿ!" << endl;
+        std::cerr << "ÐžÑˆÐ¸Ð±ÐºÐ° Ð¿Ñ€Ð¸ Ð¾Ñ‚ÐºÑ€Ñ‹Ñ‚Ð¸Ð¸ Ñ„Ð°Ð¹Ð»Ð° Ð´Ð»Ñ Ñ‡Ñ‚ÐµÐ½Ð¸Ñ!" << std::endl;
         return;
     }
 
-    cout << "\n=== Ñîäåðæèìîå ôàéëà ===" << endl;
-    string line;
+    std::cout << "\n=== Ð¡Ð¾Ð´ÐµÑ€Ð¶Ð¸Ð¼Ð¾Ðµ Ñ„Ð°Ð¹Ð»Ð° ===" << std::endl;
+    std::string line;
     while (getline(file, line)) {
-        cout << line << endl;
+        std::cout << line << std::endl;
     }
     file.close();
 }
 
-void processLinkedListWork() {
-    LinkedList list;
+void execute_linked_list_workflow() {
+    DoublyLinkedList list;
 
-    cout << "=== Ââîä ÷èñåë â ñïèñîê ===" << endl;
+    std::cout << "=== Ð’Ð²Ð¾Ð´ Ñ‡Ð¸ÑÐµÐ» Ð² ÑÐ¿Ð¸ÑÐ¾Ðº ===" << std::endl;
     while (true) {
-        int number = inputNumber();
+        int number = read_integer_input();
         if (number == -1) break;
         list.append(number);
     }
 
-    list.print();
+    list.display();
 
-    cout << "\n=== Çàïèñü â ôàéë ===" << endl;
-    string filename;
-    cout << "Ââåäèòå èìÿ ôàéëà: ";
-    cin >> filename;
+    std::cout << "\n=== Ð—Ð°Ð¿Ð¸ÑÑŒ Ð² Ñ„Ð°Ð¹Ð» ===" << std::endl;
+    std::string filename;
+    std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð¸Ð¼Ñ Ñ„Ð°Ð¹Ð»Ð°: ";
+    std::cin >> filename;
 
-    list.writeToFileAndClear(filename);
-    printFileContents(filename);
-    list.clear();
+    list.write_to_file_and_clear(filename);
+    display_file_contents(filename);
 }
