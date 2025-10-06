@@ -23,14 +23,13 @@ Dynamic26. Даны указатели P1 и P2 на начало и конец 
 */
 #include "queue.h"
 
-
 int main()
 {
     setlocale(LC_ALL, "Russian");
-    int n;
-    PNode p1 = input(n);
-    show_initial_queue(p1);
-    delete_n_elements(n, p1);
-    show_new_queue(p1);
+    int elements_to_remove;
+    Queue queue = create_queue_from_input(elements_to_remove);
+    queue.display_initial();
+    queue.remove_first_n_elements(elements_to_remove);
+    queue.display_after_removal();
     return 0;
 }
