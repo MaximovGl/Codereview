@@ -1,25 +1,33 @@
 #ifndef QUEUE_H
 #define QUEUE_H
-#include <iostream>
-using namespace std;
 
-class Node {
+#include <iostream>
+
+class Queue {
 private:
-    int data;
-    Node* next;
+    struct Node {
+        int data;
+        Node* next;
+        Node(int value) : data(value), next(nullptr) {}
+    };
+    
+    Node* front_node;
+    Node* back_node;
+    int element_count;
+
 public:
-    int getData() const { return data; }
-    void setData(int newData) { data = newData; }
-    Node* getNext() const { return next; }
-    void setNext(Node* newNext) { next = newNext; }
+    Queue();
+    ~Queue();
+    void enqueue(int value);
+    void dequeue();
+    bool is_empty() const;
+    int get_front() const;
+    int get_size() const;
+    void display_initial() const;
+    void remove_first_n_elements(int n);
+    void display_after_removal() const;
 };
 
-typedef Node* PNode;
-
-void add_node(int data, PNode& head, PNode& tail);
-void show_initial_queue(PNode head);
-void delete_n_elements(int n, PNode& head);
-void show_new_queue(PNode head);
-PNode input(int& n);
+Queue create_queue_from_input(int& elements_to_remove);
 
 #endif
