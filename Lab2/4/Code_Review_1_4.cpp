@@ -14,6 +14,6 @@
 
 int main() {
     setlocale(LC_ALL, "Russian");
-    processLinkedListWork();
+    execute_linked_list_workflow();
     return 0;
 }
