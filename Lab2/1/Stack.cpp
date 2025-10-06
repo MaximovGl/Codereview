@@ -2,40 +2,40 @@
 
 using namespace std;
 
-Stack::Stack() : p1(nullptr), counter(0) {}
+Stack::Stack() : top_node(nullptr), element_count(0) {}
 
 Stack::~Stack() {
-    while (p1 != nullptr) {
-        Node* temp = p1;
-        p1 = p1->next;
+    while (top_node != nullptr) {
+        Node* temp = top_node;
+        top_node = top_node->next;
         delete temp;
     }
-    counter = 0;
+    element_count = 0;
 };
 
 void Stack::add_node(int new_node_value) {
     Node* new_node = new Node(new_node_value);
-    new_node->next = p1;
-    p1 = new_node;
-    ++counter;
+    new_node->next = top_node;
+    top_node = new_node;
+    ++element_count;
 };
 
 void Stack::delete_top() {
-    if (p1 == nullptr) {
+    if (top_node == nullptr) {
         cout << "Стек пуст, удалять нечего." << endl;
         return;
     }
 
-    Node* temporary_node = p1;
-    int d = p1->data;
-    p1 = p1->next;
-    --counter;
+    Node* temporary_node = top_node;
+    int data_value = top_node->data;
+    top_node = top_node->next;
+    --element_count;
 
-    cout << "Первый элемент стека: " << d << endl;
-    cout << "Адрес новой вершины p1 после извлечения 1 элемента: " << p1 << endl;
+    cout << "Первый элемент стека: " << data_value << endl;
+    cout << "Адрес новой вершины top_node после извлечения 1 элемента: " << top_node << endl;
 
-    if (p1 != nullptr) {
-        cout << "Значение новой вершины p1: " << p1->data << endl;
+    if (top_node != nullptr) {
+        cout << "Значение новой вершины top_node: " << top_node->data << endl;
     }
     else {
         cout << "Стек теперь пуст." << endl;
@@ -45,14 +45,14 @@ void Stack::delete_top() {
 };
 
 void Stack::show_stack() const {
-    Node* temporary_node = p1;
-    if (temporary_node == nullptr) {
+    Node* current_node = top_node;
+    if (current_node == nullptr) {
         cout << "Стек пуст." << endl;
         return;
     }
     cout << "Текущий стек (сверху вниз):" << endl;
-    while (temporary_node != nullptr) {
-        cout << temporary_node->data << endl;
-        temporary_node = temporary_node->next;
+    while (current_node != nullptr) {
+        cout << current_node->data << endl;
+        current_node = current_node->next;
     }
 };
