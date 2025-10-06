@@ -17,49 +17,49 @@
 #include <locale>
 
 int main() {
-	setlocale(LC_ALL, "Russian");
-	int n1, n2;
-	list<int> L1;
-	list<int> L2;
+    setlocale(LC_ALL, "Russian");
+    int first_list_size, second_list_size;
+    std::list<int> first_list;
+    std::list<int> second_list;
 
-	cout << "Введите размер списка L1 (нечетное число): ";
-	cin >> n1;
-	cout << "Введите размер списка L2: ";
-	cin >> n2;
+    std::cout << "Введите размер списка L1 (нечетное число): ";
+    std::cin >> first_list_size;
+    std::cout << "Введите размер списка L2: ";
+    std::cin >> second_list_size;
 
-	if (n1 <= 0 || n2 < 0) {
-		cerr << "Ошибка: некорректный размер списка" << endl;
-		return 1;
-	}
-	if (n1 % 2 == 0) {
-		cerr << "Ошибка: размер L1 должен быть нечетным" << endl;
-		return 1;
-	}
+    if (first_list_size <= 0 || second_list_size < 0) {
+        std::cerr << "Ошибка: некорректный размер списка" << std::endl;
+        return 1;
+    }
+    if (first_list_size % 2 == 0) {
+        std::cerr << "Ошибка: размер L1 должен быть нечетным" << std::endl;
+        return 1;
+    }
 
-	if (!Input(L1, n1)) {
-		cerr << "Ошибка заполнения L1" << endl;
-		return 1;
-	}
-	if (!Input(L2, n2)) {
-		cerr << "Ошибка заполнения L2" << endl;
-		return 1;
-	}
+    if (!fill_list(first_list, first_list_size)) {
+        std::cerr << "Ошибка заполнения L1" << std::endl;
+        return 1;
+    }
+    if (!fill_list(second_list, second_list_size)) {
+        std::cerr << "Ошибка заполнения L2" << std::endl;
+        return 1;
+    }
 
-	cout << "\nИсходные списки:" << endl;
-	cout << "L1: ";
-	Print(L1);
-	cout << "L2: ";
-	Print(L2);
+    std::cout << "\nИсходные списки:" << std::endl;
+    std::cout << "L1 (прямой порядок): ";
+    print_list(first_list);
+    std::cout << "L1 (обратный порядок): ";
+    print_list_reverse(first_list);
+    std::cout << "L2: ";
+    print_list(second_list);
 
+    move_middle_element(first_list, second_list);
 
-	Splice(L1, L2);
+    std::cout << "\nРезультат обработки:" << std::endl;
+    std::cout << "L1: ";
+    print_list(first_list);
+    std::cout << "L2: ";
+    print_list(second_list);
 
-
-	cout << "\nРезультат обработки:" << endl;
-	cout << "L1: ";
-	Print(L1);
-	cout << "L2: ";
-	Print(L2);
-
-	return 0;
+    return 0;
 }
