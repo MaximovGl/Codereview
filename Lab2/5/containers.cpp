@@ -2,72 +2,97 @@
 #include <fstream>
 #include <cstdlib>
 #include <ctime>
-#include <iterator> 
+#include <iterator>
+#include <vector>
 
-bool Input(list<int>& L, int n) {
-	int method, x;
-	cout << "Âûáåðèòå ñïîñîá çàïîëíåíèÿ êîíòåéíåðà:" << endl;
-	cout << "1) Ââîä ñ êëàâèàòóðû" << endl;
-	cout << "2) Ââîä ñ ïîìîùüþ ðàíäîìàéçåðà" << endl;
-	cout << "3) Ââîä èç òåêñòîâîãî ôàéëà" << endl;
-	cin >> method;
+bool fill_list(std::list<int>& container, int size) {
+    int input_method;
+    std::cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ ÑÐ¿Ð¾ÑÐ¾Ð± Ð·Ð°Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¸Ñ ÐºÐ¾Ð½Ñ‚ÐµÐ¹Ð½ÐµÑ€Ð°:" << std::endl;
+    std::cout << "1) Ð’Ð²Ð¾Ð´ Ñ ÐºÐ»Ð°Ð²Ð¸Ð°Ñ‚ÑƒÑ€Ñ‹" << std::endl;
+    std::cout << "2) Ð—Ð°Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¸Ðµ ÑÐ»ÑƒÑ‡Ð°Ð¹Ð½Ñ‹Ð¼Ð¸ Ñ‡Ð¸ÑÐ»Ð°Ð¼Ð¸" << std::endl;
+    std::cout << "3) Ð§Ñ‚ÐµÐ½Ð¸Ðµ Ð¸Ð· Ñ‚ÐµÐºÑÑ‚Ð¾Ð²Ð¾Ð³Ð¾ Ñ„Ð°Ð¹Ð»Ð°" << std::endl;
+    std::cin >> input_method;
 
-	switch (method) {
-	case 1:
-		for (int i = 0; i < n; i++) {
-			cout << "Ââåäèòå ýëåìåíò #" << i + 1 << ": ";
-			cin >> x;
-			L.insert(L.end(), x);
-		}
-		return true;
+    switch (input_method) {
+    case 1: {
+        std::vector<int> temp_vector;
+        std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ " << size << " ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð²: ";
+        for (int i = 0; i < size; i++) {
+            int value;
+            std::cin >> value;
+            temp_vector.push_back(value);
+        }
+        container = std::list<int>(temp_vector.begin(), temp_vector.end());
+        return true;
+    }
 
-	case 2:
-		srand(static_cast<unsigned>(time(0)));
-		for (int i = 0; i < n; i++) {
-			L.insert(L.end(), rand() % 101 - 50);
-		}
-		return true;
+    case 2: {
+        std::vector<int> temp_vector;
+        std::srand(static_cast<unsigned>(std::time(0)));
+        for (int i = 0; i < size; i++) {
+            temp_vector.push_back(std::rand() % 101 - 50);
+        }
+        container = std::list<int>(temp_vector.begin(), temp_vector.end());
+        return true;
+    }
 
-	case 3: {
-		ifstream file("a.txt");
-		if (!file.is_open()) {
-			cerr << "Îøèáêà: ôàéë íå îòêðûò" << endl;
-			return false;
-		}
-		for (int i = 0; i < n; i++) {
-			if (!(file >> x)) {
-				cerr << "Îøèáêà ÷òåíèÿ ôàéëà" << endl;
-				file.close();
-				return false;
-			}
-			L.insert(L.end(), x);
-		}
-		file.close();
-		return true;
-	}
+    case 3: {
+        std::string filename;
+        std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð¸Ð¼Ñ Ñ„Ð°Ð¹Ð»Ð°: ";
+        std::cin >> filename;
+        
+        std::ifstream input_file(filename);
+        if (!input_file.is_open()) {
+            std::cerr << "ÐžÑˆÐ¸Ð±ÐºÐ°: Ñ„Ð°Ð¹Ð» Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ñ‚" << std::endl;
+            return false;
+        }
+        
+        std::vector<int> temp_vector;
+        int value;
+        for (int i = 0; i < size && input_file >> value; i++) {
+            temp_vector.push_back(value);
+        }
+        
+        if (temp_vector.size() != static_cast<size_t>(size)) {
+            std::cerr << "ÐžÑˆÐ¸Ð±ÐºÐ°: Ð² Ñ„Ð°Ð¹Ð»Ðµ Ð½ÐµÐ´Ð¾ÑÑ‚Ð°Ñ‚Ð¾Ñ‡Ð½Ð¾ Ð´Ð°Ð½Ð½Ñ‹Ñ…" << std::endl;
+            input_file.close();
+            return false;
+        }
+        
+        container = std::list<int>(temp_vector.begin(), temp_vector.end());
+        input_file.close();
+        return true;
+    }
 
-	default:
-		cerr << "Îøèáêà: íåêîððåêòíûé ìåòîä ââîäà" << endl;
-		return false;
-	}
+    default:
+        std::cerr << "ÐžÑˆÐ¸Ð±ÐºÐ°: Ð½ÐµÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ñ‹Ð¹ Ð¼ÐµÑ‚Ð¾Ð´ Ð²Ð²Ð¾Ð´Ð°" << std::endl;
+        return false;
+    }
 }
 
-
-void Print(const list<int> L) {
-	for (list<int>::const_iterator it = L.begin(); it != L.end(); it++) {
-		cout << *it << " ";
-	}
-	cout << endl;
+void print_list(const std::list<int>& container) {
+    for (std::list<int>::const_iterator iterator = container.begin(); 
+         iterator != container.end(); ++iterator) {
+        std::cout << *iterator << " ";
+    }
+    std::cout << std::endl;
 }
 
+void print_list_reverse(const std::list<int>& container) {
+    for (std::list<int>::const_reverse_iterator reverse_iterator = container.rbegin(); 
+         reverse_iterator != container.rend(); ++reverse_iterator) {
+        std::cout << *reverse_iterator << " ";
+    }
+    std::cout << std::endl;
+}
 
-void Splice(list<int>& L1, list<int>& L2) {
-	if (L1.empty()) {
-		cerr << "Îøèáêà: ñïèñîê L1 ïóñò" << endl;
-		return;
-	}
+void move_middle_element(std::list<int>& source_list, std::list<int>& destination_list) {
+    if (source_list.empty()) {
+        std::cerr << "ÐžÑˆÐ¸Ð±ÐºÐ°: ÑÐ¿Ð¸ÑÐ¾Ðº Ð¸ÑÑ‚Ð¾Ñ‡Ð½Ð¸Ðº Ð¿ÑƒÑÑ‚" << std::endl;
+        return;
+    }
 
-	list<int>::iterator it = L1.begin();
-	advance(it, L1.size() / 2);
-	L2.splice(L2.end(), L1, it);
+    std::list<int>::iterator middle_iterator = source_list.begin();
+    std::advance(middle_iterator, source_list.size() / 2);
+    destination_list.splice(destination_list.end(), source_list, middle_iterator);
 }
