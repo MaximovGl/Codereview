@@ -1,40 +1,32 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
-#include <iostream>
-#include <fstream>
 #include <string>
-#include <locale>
 
-struct Node {
-    int data;        
-    Node* prev;      
-    Node* next;      
-};
-
-class LinkedList {
+class DoublyLinkedList {
 private:
-    Node* head;      
+    struct Node {
+        int data;
+        Node* prev;
+        Node* next;
+        Node(int value) : data(value), prev(nullptr), next(nullptr) {}
+    };
+    
+    Node* head;
+    Node* tail;
 
 public:
-    LinkedList();    
-    ~LinkedList();   
-
+    DoublyLinkedList();
+    ~DoublyLinkedList();
     void append(int value);
-
-    void deleteNode(Node* nodeToDelete);
-
-    void print() const;
-
-    void writeToFileAndClear(const std::string& filename);
-
+    bool remove_value(int value);
+    void display() const;
+    void write_to_file_and_clear(const std::string& filename);
     void clear();
 };
 
-int inputNumber();
+int read_integer_input();
+void display_file_contents(const std::string& filename);
+void execute_linked_list_workflow();
 
-void printFileContents(const std::string& filename);
-
-void processLinkedListWork();
-
-#endif 
+#endif
