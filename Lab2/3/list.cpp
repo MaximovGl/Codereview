@@ -1,173 +1,190 @@
 #include "list.h"
 #include <iostream>
+#include <limits>
 
-void Add(int data, PNode& Head, PNode& LastNode) {
-	PNode Temp;
-	if (Head == nullptr) {
-		Head = new Node;
-		LastNode = Head;
-		Head->next = nullptr;
-	}
-	else {
-		Temp = new Node;
-		LastNode->next = Temp;
-		LastNode = Temp;
-		LastNode->next = nullptr;
-	}
-	LastNode->x = data;
+SortedList::SortedList() : head(nullptr), tail(nullptr), size(0) {}
+
+SortedList::~SortedList() {
+    Node* current = head;
+    while (current != nullptr) {
+        Node* next_node = current->next;
+        delete current;
+        current = next_node;
+    }
 }
 
-PNode Find(int data, PNode& Head) {
-	PNode Temp = Head;
-	PNode prev = Head;
-	while (Temp != nullptr && Temp->x < data) {
-		prev = Temp;
-		Temp = Temp->next;
-	}
-	return prev;
+void SortedList::append(int value) {
+    Node* new_node = new Node(value);
+    if (tail == nullptr) {
+        head = new_node;
+        tail = new_node;
+    } else {
+        tail->next = new_node;
+        tail = new_node;
+    }
+    size++;
 }
 
-void Newadd(int data, PNode p, PNode& Head) {
-	PNode newNode = new Node;
-	newNode->next = nullptr;
-	newNode->x = data;
-	if (Head == nullptr || Head->x >= data) {
-		newNode->next = Head;
-		Head = newNode;
-	}
-	else {
-		PNode Prev = Find(data, Head);
-		if (Prev != nullptr) {
-			newNode->next = Prev->next;
-			Prev->next = newNode;
-		}
-	}
+void SortedList::insert_sorted(int value) {
+    Node* new_node = new Node(value);
+    
+    if (head == nullptr || head->data >= value) {
+        new_node->next = head;
+        head = new_node;
+        if (tail == nullptr) {
+            tail = new_node;
+        }
+    } else {
+        Node* current = head;
+        while (current->next != nullptr && current->next->data < value) {
+            current = current->next;
+        }
+        new_node->next = current->next;
+        current->next = new_node;
+        if (new_node->next == nullptr) {
+            tail = new_node;
+        }
+    }
+    size++;
 }
 
-void Show_Before(PNode& Head) {
-	PNode Mynode = Head;
-	int count = 0;
-	cout << "Âñå ïîëó÷åííûå ÷èñëà: ";
-	while (Mynode != nullptr) {
-		cout << Mynode->x << " ";
-		Mynode = Mynode->next;
-	}
-	cout << endl;
+void SortedList::remove(int value) {
+    if (head == nullptr) return;
+    
+    if (head->data == value) {
+        Node* node_to_delete = head;
+        head = head->next;
+        if (head == nullptr) {
+            tail = nullptr;
+        }
+        delete node_to_delete;
+        size--;
+        return;
+    }
+    
+    Node* current = head;
+    while (current->next != nullptr && current->next->data != value) {
+        current = current->next;
+    }
+    
+    if (current->next != nullptr) {
+        Node* node_to_delete = current->next;
+        current->next = node_to_delete->next;
+        if (node_to_delete == tail) {
+            tail = current;
+        }
+        delete node_to_delete;
+        size--;
+    }
 }
 
-void Show_After(PNode& Head) {
-	PNode Mynode = Head;
-	int count = 0;
-	cout << "Âñå ïîëó÷åííûå ÷èñëà: ";
-
-	while (Mynode != nullptr) {
-		cout << Mynode->x << " ";
-		Mynode = Mynode->next;
-	}
-	if (Mynode == nullptr) {
-		cout << "Ïóñòî!";
-	}
-	cout << endl;
+bool SortedList::contains(int value) const {
+    Node* current = head;
+    while (current != nullptr) {
+        if (current->data == value) {
+            return true;
+        }
+        current = current->next;
+    }
+    return false;
 }
 
-PNode Find(PNode Head, int data) {
-	PNode q = Head;
-	while (q && q->x != data)
-		q = q->next;
-	return q;
+void SortedList::display() const {
+    Node* current = head;
+    while (current != nullptr) {
+        std::cout << current->data << " ";
+        current = current->next;
+    }
+    std::cout << std::endl;
 }
 
-void DeleteNode(PNode& Head, PNode OldNode) {
-	PNode q = Head;
-	if (Head == OldNode) {
-		Head = OldNode->next;
-	}
-	else {
-		while (q->next != OldNode) {
-			q = q->next;
-		}
-		q->next = OldNode->next;
-	}
-	delete OldNode;
+SortedList SortedList::create_copy() const {
+    SortedList copy;
+    Node* current = head;
+    while (current != nullptr) {
+        copy.append(current->data);
+        current = current->next;
+    }
+    return copy;
 }
 
-int Read_int() {
-	int m = 0;
-	while (!(cin >> m)) {
-		cerr << "Îøèáêà ââîäà! Ïîæàëóéñòà, ââåäèòå öåëîå ÷èñëî: ";
-		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
-	}
-	return m;
+int read_integer() {
+    int value = 0;
+    while (!(std::cin >> value)) {
+        std::cerr << "ÐžÑˆÐ¸Ð±ÐºÐ° Ð²Ð²Ð¾Ð´Ð°! ÐŸÐ¾Ð¶Ð°Ð»ÑƒÐ¹ÑÑ‚Ð°, Ð²Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ†ÐµÐ»Ð¾Ðµ Ñ‡Ð¸ÑÐ»Ð¾: ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+    return value;
 }
 
-void RunTask() {
-	PNode p1 = nullptr;
-	PNode p2 = nullptr;
-	PNode p3 = nullptr;
-	PNode p4 = nullptr;
-	int n = 0;
-	int m = 0;
-	cout << "Äîáðî ïîæàëîâàòü!" << endl;
-	cout << "Ïåðåä íàìè ïîñëåäíÿÿ çàäà÷à: " << endl;
-	cout << "Äàí îäíîñâÿçíûé ëèíåéíûé ñïèñîê. Çíà÷åíèÿ ýëåìåíòîâ ñïèñêà óïîðÿäî÷åíû ïî âîçðàñòàíèþ." << endl;
-	cout << "Íåîáõîäèìî ñîçäàòü êîïèþ èñõîäíîãî ñïèñêà, ïîñëå ÷åãî âî âíîâü ñîçäàííîì ñïèñêå âñòàâèòü" << endl;
-	cout << "çíà÷åíèå M òàê, ÷òîáû îí îñòàëñÿ óïîðÿäî÷åííûì è âûâåñòè ññûëêó íà ïåðâûé ýëåìåíò ïîëó÷åííîãî ñïèñêà P2." << endl << endl;
-	cout << "----------------------------------------------------------------------" << endl << endl;
-	cout << "Âàì íåîáõîæèìî áóäåò ââåñòè êîëè÷åñòâî ýëåìåíòîâ â ñïèñêå," << endl;
-	cout << "à ïîçæå ââåñòè çíà÷åíèÿ ýëåìåíòîâ ÑÒÐÎÃÎ Â ÏÎÐßÄÊÅ ÂÎÇÐÀÑÒÀÍÈß " << endl;
-	cout << "è ââåñòè ÷èñëî êîòîðîå âû õîòèòå âñòàâèòü." << endl;
-	cout << "ÏÐÈÌÅÐ ÏÎÐßÄÊÀ ÂÎÇÐÀÑÒÀÍÈß 1 2 3 4 5 6" << endl;
-	cout << "---------------------------------------------------------------------" << endl << endl;
-	cout << "Ââåäèòå ÷èñëî n - êîëè÷åñòâî ýëåìåíòîâ â ñïèñêå: ";
-	n = Read_int();
-	cout << endl << "Ââåäèòå " << n << " ÷èñåë â ïîðÿäêå âîçðàñòàíèÿ (!!!!): ";
-	for (int i = 0; i < n; ++i) {
-		int j = 0;
-		j = Read_int();
-		Add(j, p1, p2);
-		Add(j, p3, p4);
-	}
+void run_task() {
+    SortedList original_list;
+    int element_count = 0;
+    int value_to_insert = 0;
+    
+    std::cout << "Ð”Ð¾Ð±Ñ€Ð¾ Ð¿Ð¾Ð¶Ð°Ð»Ð¾Ð²Ð°Ñ‚ÑŒ!" << std::endl;
+    std::cout << "ÐŸÐµÑ€ÐµÐ´ Ð½Ð°Ð¼Ð¸ Ð¿Ð¾ÑÐ»ÐµÐ´Ð½ÑÑ Ð·Ð°Ð´Ð°Ñ‡Ð°: " << std::endl;
+    std::cout << "Ð”Ð°Ð½ Ð¾Ð´Ð½Ð¾ÑÐ²ÑÐ·Ð½Ñ‹Ð¹ Ð»Ð¸Ð½ÐµÐ¹Ð½Ñ‹Ð¹ ÑÐ¿Ð¸ÑÐ¾Ðº. Ð—Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² ÑÐ¿Ð¸ÑÐºÐ° ÑƒÐ¿Ð¾Ñ€ÑÐ´Ð¾Ñ‡ÐµÐ½Ñ‹ Ð¿Ð¾ Ð²Ð¾Ð·Ñ€Ð°ÑÑ‚Ð°Ð½Ð¸ÑŽ." << std::endl;
+    std::cout << "ÐÐµÐ¾Ð±Ñ…Ð¾Ð´Ð¸Ð¼Ð¾ ÑÐ¾Ð·Ð´Ð°Ñ‚ÑŒ ÐºÐ¾Ð¿Ð¸ÑŽ Ð¸ÑÑ…Ð¾Ð´Ð½Ð¾Ð³Ð¾ ÑÐ¿Ð¸ÑÐºÐ°, Ð¿Ð¾ÑÐ»Ðµ Ñ‡ÐµÐ³Ð¾ Ð² Ð²Ð½Ð¾Ð²ÑŒ ÑÐ¾Ð·Ð´Ð°Ð½Ð½Ñ‹Ð¹ ÑÐ¿Ð¸ÑÐ¾Ðº Ð²ÑÑ‚Ð°Ð²Ð¸Ñ‚ÑŒ" << std::endl;
+    std::cout << "Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ M Ñ‚Ð°Ðº, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð¾Ð½ Ð¾ÑÑ‚Ð°Ð»ÑÑ ÑƒÐ¿Ð¾Ñ€ÑÐ´Ð¾Ñ‡ÐµÐ½Ð½Ñ‹Ð¼ Ð¸ Ð²Ñ‹Ð²ÐµÑÑ‚Ð¸ ÑÑÑ‹Ð»ÐºÑƒ Ð½Ð° Ð¿ÐµÑ€Ð²Ñ‹Ð¹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚ Ð¿Ð¾Ð»ÑƒÑ‡ÐµÐ½Ð½Ð¾Ð³Ð¾ ÑÐ¿Ð¸ÑÐºÐ° P2." << std::endl << std::endl;
+    std::cout << "----------------------------------------------------------------------" << std::endl << std::endl;
+    std::cout << "Ð’Ð°Ð¼ Ð½ÐµÐ¾Ð±Ñ…Ð¾Ð´Ð¸Ð¼Ð¾ Ð±ÑƒÐ´ÐµÑ‚ Ð²Ð²ÐµÑÑ‚Ð¸ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ð² ÑÐ¿Ð¸ÑÐºÐµ," << std::endl;
+    std::cout << "Ð° Ð¿Ð¾Ð·Ð¶Ðµ Ð²Ð²ÐµÑÑ‚Ð¸ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ð¡Ð¢Ð ÐžÐ“Ðž Ð’ ÐŸÐžÐ Ð¯Ð”ÐšÐ• Ð’ÐžÐ—Ð ÐÐ¡Ð¢ÐÐÐ˜Ð¯ " << std::endl;
+    std::cout << "Ð¸ Ð²Ð²ÐµÑÑ‚Ð¸ Ñ‡Ð¸ÑÐ»Ð¾ ÐºÐ¾Ñ‚Ð¾Ñ€Ð¾Ðµ Ð²Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ Ð²ÑÑ‚Ð°Ð²Ð¸Ñ‚ÑŒ." << std::endl;
+    std::cout << "ÐŸÐ Ð˜ÐœÐ•Ð  ÐŸÐžÐ Ð¯Ð”ÐšÐ Ð’ÐžÐ—Ð ÐÐ¡Ð¢ÐÐÐ˜Ð¯ 1 2 3 4 5 6" << std::endl;
+    std::cout << "---------------------------------------------------------------------" << std::endl << std::endl;
+    std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ‡Ð¸ÑÐ»Ð¾ n - ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ð² ÑÐ¿Ð¸ÑÐºÐµ: ";
+    element_count = read_integer();
+    
+    std::cout << std::endl << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ " << element_count << " Ñ‡Ð¸ÑÐµÐ» Ð² Ð¿Ð¾Ñ€ÑÐ´ÐºÐµ Ð²Ð¾Ð·Ñ€Ð°ÑÑ‚Ð°Ð½Ð¸Ñ (!!!!): ";
+    for (int i = 0; i < element_count; ++i) {
+        int value = read_integer();
+        original_list.append(value);
+    }
 
-	cout << endl << "Ââåäèòå öåëîå çíà÷åíèå ÷èñëà m, êîòîðîå íåîáõîäèìî áóäåò âñòàâèòü: ";
-	m = Read_int();
-	Show_Before(p1);
-	cout << endl;
-	PNode P = Find(m, p3);
-	Newadd(m, P, p3);
-	Show_Before(p3);
-	int choice;
-	cout << endl << "Õîòèòå óäàëèòü êàêîé-íèáóäü ýëåìåíò?" << endl;
-	cout << "Åñëè äà, òî íàïèøèòå 1" << endl;
-	cout << "Åñëè íåò, òî íàïèøèòå 2" << endl;
-	cout << "Âàø âûáîð: ";
-	choice = Read_int();
-	cout << endl;
-	switch (choice) {
-	case 1: {
-		cout << "Ââåäèòå ÷èñëî - êîëè÷åñòâî ýëåìåíòîâ êîòîðîå âû õîòèòå óäàëèòü: ";
-		int num = 0;
-		num = Read_int();
-		for (int i = 0; i < num; ++i) {
-			cout << "Ââåäèòå çíà÷åíèå ýëåìåíòà, êîòîðûé âû õîòèòå óäàëèòü: ";
-			int x = 0;
-			x = Read_int();
-			PNode p = Find(p3, x);
-			cout << endl;
-			cout << "Óäàëåíèå...." << endl;
-			DeleteNode(p3, p);
-		}
-		Show_After(p3);
-	} break;
+    std::cout << std::endl << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ†ÐµÐ»Ð¾Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ñ‡Ð¸ÑÐ»Ð° m, ÐºÐ¾Ñ‚Ð¾Ñ€Ð¾Ðµ Ð½ÐµÐ¾Ð±Ñ…Ð¾Ð´Ð¸Ð¼Ð¾ Ð±ÑƒÐ´ÐµÑ‚ Ð²ÑÑ‚Ð°Ð²Ð¸Ñ‚ÑŒ: ";
+    value_to_insert = read_integer();
+    
+    std::cout << "Ð˜ÑÑ…Ð¾Ð´Ð½Ñ‹Ð¹ ÑÐ¿Ð¸ÑÐ¾Ðº: ";
+    original_list.display();
+    std::cout << std::endl;
+    
+    SortedList copied_list = original_list.create_copy();
+    copied_list.insert_sorted(value_to_insert);
+    
+    std::cout << "Ð¡Ð¿Ð¸ÑÐ¾Ðº Ð¿Ð¾ÑÐ»Ðµ Ð²ÑÑ‚Ð°Ð²ÐºÐ¸: ";
+    copied_list.display();
+    
+    int choice;
+    std::cout << std::endl << "Ð¥Ð¾Ñ‚Ð¸Ñ‚Ðµ ÑƒÐ´Ð°Ð»Ð¸Ñ‚ÑŒ ÐºÐ°ÐºÐ¾Ð¹-Ð½Ð¸Ð±ÑƒÐ´ÑŒ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚?" << std::endl;
+    std::cout << "Ð•ÑÐ»Ð¸ Ð´Ð°, Ñ‚Ð¾ Ð½Ð°Ð¿Ð¸ÑˆÐ¸Ñ‚Ðµ 1" << std::endl;
+    std::cout << "Ð•ÑÐ»Ð¸ Ð½ÐµÑ‚, Ñ‚Ð¾ Ð½Ð°Ð¿Ð¸ÑˆÐ¸Ñ‚Ðµ 2" << std::endl;
+    std::cout << "Ð’Ð°Ñˆ Ð²Ñ‹Ð±Ð¾Ñ€: ";
+    choice = read_integer();
+    std::cout << std::endl;
+    
+    switch (choice) {
+    case 1: {
+        std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ‡Ð¸ÑÐ»Ð¾ - ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² ÐºÐ¾Ñ‚Ð¾Ñ€Ð¾Ðµ Ð²Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ ÑƒÐ´Ð°Ð»Ð¸Ñ‚ÑŒ: ";
+        int delete_count = read_integer();
+        for (int i = 0; i < delete_count; ++i) {
+            std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð°, ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ð¹ Ð²Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ ÑƒÐ´Ð°Ð»Ð¸Ñ‚ÑŒ: ";
+            int value_to_delete = read_integer();
+            copied_list.remove(value_to_delete);
+        }
+        std::cout << "Ð¡Ð¿Ð¸ÑÐ¾Ðº Ð¿Ð¾ÑÐ»Ðµ ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ñ: ";
+        copied_list.display();
+    } break;
 
-	case 2: {
-		cout << "Ñïàñèáî çà òåðïåíèå!!!" << endl;
-		cout << "Äî ñâèäàíèÿ!!!" << endl;
-	} break;
+    case 2: {
+        std::cout << "Ð¡Ð¿Ð°ÑÐ¸Ð±Ð¾ Ð·Ð° Ñ‚ÐµÑ€Ð¿ÐµÐ½Ð¸Ðµ!!!" << std::endl;
+        std::cout << "Ð”Ð¾ ÑÐ²Ð¸Ð´Ð°Ð½Ð¸Ñ!!!" << std::endl;
+    } break;
 
-	default: {
-		cerr << "Ââåäåíî íåâåðíîå ÷èñëî";
-		break;
-	}
-	}
+    default: {
+        std::cerr << "Ð’Ð²ÐµÐ´ÐµÐ½Ð¾ Ð½ÐµÐ²ÐµÑ€Ð½Ð¾Ðµ Ñ‡Ð¸ÑÐ»Ð¾";
+        break;
+    }
+    }
 }
