@@ -43,7 +43,11 @@ void CalculateArts(ifstream& input, ofstream& output) {
     dp[0] = 0;
     */
 
-    int max_possible_weight = min_weight + 100; 
+    int total_max_weight = 0;
+    for (int w : weights) {
+        total_max_weight += w;
+    }
+    int max_possible_weight = total_max_weight;
     vector<int> min_tax_for_weights(max_possible_weight + 1, INT_MAX);
     min_tax_for_weights[0] = 0;
 
@@ -82,3 +86,4 @@ void CalculateArts(ifstream& input, ofstream& output) {
     output << "Суммарный вес: " << best_weight << " кг" << endl;
     output << "Общее налоговое бремя: " << min_tax << endl;
 }
+
