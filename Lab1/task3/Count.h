@@ -6,4 +6,5 @@
 
 int Intcheck(const std::string& prompt);
 
-#endif // COUNT_H
+#endif
+
