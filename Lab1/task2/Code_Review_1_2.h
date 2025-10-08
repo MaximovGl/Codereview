@@ -10,7 +10,9 @@
 
 #include <vector>
 #include <fstream>
+#include <climits> 
 
 void CalculateArts(std::ifstream& input, std::ofstream& output);
 
 #endif
+
