@@ -12,5 +12,6 @@
 
 int Num(const  std::string& expression, size_t& pos);
 int Calc(const  std::string& expression, size_t& pos);
+bool Exp_check(const std::string& exp);
 
-#endif // EVALUATE_H
+#endif 
