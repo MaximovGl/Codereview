@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <climits>
+#include <algorithm> 
 
 using namespace std;
 
@@ -37,16 +38,16 @@ void CalculateArts(int art_amount, int required_weight, vector<int>& weights, ve
     }
     */
 
-    vector<vector<int>> weight_tax(art_amount + 1, vector<int>(max_weight + 1, 2147483647));
+    vector<vector<int>> weight_tax(art_amount + 1, vector<int>(max_weight + 1, INT_MAX)); 
     for (int i = 0; i <= art_amount; ++i) {
         weight_tax[i][0] = 0;
     }
     /*FIXME непонятная переменная
     for (int s = 1; s <= max_weight; s++) {
     */
-    for (int curr_art = 1; curr_art <= art_amount; curr_art++) {  //проходим по всем  артефактам
-        for (int curr_weight = 1; curr_weight <= max_weight; curr_weight++) { //Проходим по всем весам от 1 до max.
-            if (curr_weight >= weights[curr_art] && weight_tax[curr_art - 1][curr_weight - weights[curr_art]] != 2147483647) { 
+    for (int curr_art = 1; curr_art <= art_amount; curr_art++) { 
+        for (int curr_weight = 1; curr_weight <= max_weight; curr_weight++) {
+            if (curr_weight >= weights[curr_art] && weight_tax[curr_art - 1][curr_weight - weights[curr_art]] != INT_MAX) { 
                 weight_tax[curr_art][curr_weight] = min(weight_tax[curr_art - 1][curr_weight], weight_tax[curr_art - 1][curr_weight - weights[curr_art]] + taxes[curr_art]);
             }
             else {
