@@ -1,4 +1,4 @@
-﻿//FIXME задани е не по форме
+﻿//FIXME задание не по форме
 //Во всех заданиях данной подгруппы предполагается, что исходные строки, определяющие выражения, 
 //не содержат пробелов.При выполнении заданий не следует использовать оператор цикла.
 //Вывести значение целочисленного выражения, заданного в виде строки S.Выражение
@@ -13,104 +13,6 @@
 
 using namespace std;
 
-//FIXME нет проверки водимого выражения
-bool Exp_check(const string& exp) {
-	int parenthesis_balance = 0;
-	for (char c : exp) {
-		if (!isdigit(c) && c != 'M' && c != 'm' && c != ',' && c != '(' && c != ')'){
-			cerr << "Ошибка: Недопустимый символ '" << c << "' в выражении." << endl;
-			return false;
-		}
-		if (c == '(') {
-			parenthesis_balance++;
-		}
-		else if (c == ')') {
-			parenthesis_balance--;
-		}
-		if (parenthesis_balance < 0) {
-			cerr << "Ошибка: Несбалансированные скобки (лишняя закрывающая)." << endl;
-			return false;
-		}
-	}
-	if (parenthesis_balance != 0) {
-		cerr << "Ошибка: Несбалансированные скобки (не хватает закрывающей)." << endl;
-		return false;
-	}
-	return true;
-}
-
-
-//FIXME скобки
-int Num(const string& exp, size_t& pos){
-	int number = 0;
-	while (pos < exp.length() && exp[pos] >= '0' && exp[pos] <= '9') {
-		number = number * 10 + (exp[pos] - '0');
-		pos++;
-	}
-	return number;
-}
-
-//FIXME скобки
-int Calc(const string& exp, size_t& pos){
-	if (exp[pos] >= '0' && exp[pos] <= '9') {
-		return Num(exp, pos);
-	}
-
-	if (exp[pos] == 'M' || exp[pos] == 'm'){
-		//FIXME непонятное название переменной
-		//char op = exp[pos];
-		char operation_sign = exp[pos];
-		pos++;
-
-		//пропускаю (
-		while (pos < exp.length() && exp[pos] != '('){
-			pos++;
-		}
-		pos++;
-
-		int left = Calc(exp, pos);
-
-		// пропускаю ,
-		while (pos < exp.length() && exp[pos] != ','){
-			pos++;
-		}
-		pos++;
-
-		int right = Calc(exp, pos);
-
-		// пропускаю )
-		while (pos < exp.length() && exp[pos] != ')'){
-			pos++;
-		}
-		pos++;
-
-		if (operation_sign == 'M'){
-			//return max(left, right);
-			if (left > right)
-				return left;
-			else
-				return right;
-		}else{
-			//return min(left, right);
-			if (left < right)
-				return left;
-			else
-				return right;
-		}
-	}
-
-	if (exp[pos] == '(') {
-		pos++; // Пропускаем '('
-		int result = Calc(exp, pos); // продолжаем вычислять уже внутреннее выражение
-		if (exp[pos] != ')') {
-			cout << "Ожидается закрывающая скобка";
-		}
-		pos++; // Пропускаем ')'
-		return result;
-	}
-
-}
-
 //FIXME скобки
 int main(){
 	setlocale(LC_ALL, "ru");
@@ -121,8 +23,6 @@ int main(){
 	cout << "Перед нами стоит задача: найти значение выражения типа" << endl;
 	cout << " <выражение> ::= <цифра> | M(<выражение> , <выражение>) | " << endl;
 	cout << "m(<выражение>, <выражение>)" << endl;
-	//cout << "где M - функция, которая выбирает большее значение из двух чисел." << endl;
-	//cout << "а m - функция, которая выбирает меньшее значение из двух чисел." << endl;
 	cout << "где M - функция выбора большего числа из двух." << endl;
 	cout << "а m - функция выбора меньшего числа из двух." << endl;
 	cout << "-------------------------------------------------" << endl;
@@ -131,7 +31,6 @@ int main(){
 	cout << "Ваша задача - записать любое выражение, которое вы захотите" << endl;
 	cout << "БЕЗ ИСПОЛЬЗОВАНИЯ ПРОБЕЛОВ" << endl;
 	cout << "А мы посчитаем значение и выведем его на экран." << endl;
-	//cout << "Важное замечание: вводить можно только целые неотрицательные числа." << endl;
 	cout << "Важное замечание: вводите целые неотрицательные числа." << endl;
 	cout << "-------------------------------------------------" << endl;
 	cout << endl;
