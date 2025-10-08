@@ -50,7 +50,9 @@ int main(){
 		cerr << "Ошибка: Введена пустая строка." << endl;
 		return 1;
 	}
-	Exp_check(exp);
+	if (!Exp_check(exp)) {
+    return 1;
+}
 
 	size_t pos = 0;
 	int result = Calc(exp, pos);
@@ -60,4 +62,5 @@ int main(){
 
 	return 0;
 }
+
 
