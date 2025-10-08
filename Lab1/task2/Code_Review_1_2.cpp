@@ -1,4 +1,4 @@
-﻿//FIXME задача не по шаблону
+﻿﻿//FIXME задача не по шаблону
 //Археолог нашел art_amount артефактов.Известны веса(сi) и налоговое бремя(di) находок.
 //Нужно выбрать такое подмножество находок, чтобы их суммарный вес превысил min_weight кг, а их об
 //щее налоговое бремя оказалось минимальным.Известно, что решение единственно.Укажите
@@ -16,23 +16,20 @@
 
 using namespace std;
 
-int main() {
-    ifstream input("input.txt");
-    ofstream output("output.txt");
-
+void CalculateArts(ifstream& input, ofstream& output) {
     //FIXME однобуквенные переменные 
 
     /*int N, Z;
     input >> N >> Z;
     */
 
-    int art_amount, min_weight;// кол во артеф и мин треб вес
+    int art_amount, min_weight;
     input >> art_amount >> min_weight;
 
-    vector<int> weights(art_amount);//вектор для хранения весов артф
-    vector<int> taxes(art_amount);//вектор для хранения налового бремени
+    vector<int> weights(art_amount);
+    vector<int> taxes(art_amount);
 
-    for (int i = 0; i < art_amount; ++i) { //цикл для чтения весов и налогов из файла
+    for (int i = 0; i < art_amount; ++i) { 
         input >> weights[i];
     }
 
@@ -46,13 +43,10 @@ int main() {
     dp[0] = 0;
     */
 
-    // Инициализация массива для хранения минимального налогового бремени для каждого возможного веса
-    int max_possible_weight = min_weight + 100; // Максимально возможный вес
-    vector<int> min_tax_for_weights(max_possible_weight + 1, INT_MAX);//Создает вектор min_tax_for_weights, где min_tax_for_weights[j] хранит минимальное налоговое бремя для веса j. Изначально все значения равны INT_MAX
+    int max_possible_weight = min_weight + 100; 
+    vector<int> min_tax_for_weights(max_possible_weight + 1, INT_MAX);
     min_tax_for_weights[0] = 0;
 
-    // Массив для хранения выбранных артефактов
-    //Создает двумерный вектор selected, где selected[j][i] указывает, выбран ли i-й артефакт для веса j
     vector<vector<bool>> selected(max_possible_weight + 1, vector<bool>(art_amount, false));
 
     for (int i = 0; i < art_amount; ++i) { // перебирает все артефакты
@@ -65,12 +59,11 @@ int main() {
         }
     }
 
-    // Находим минимальное налоговое бремя для веса, превышающего min_weight
     int min_tax = INT_MAX;
     int best_weight = 0;
     vector<bool> best_selection;
 
-    for (int j = min_weight + 1; j <= max_possible_weight; ++j) { //перебирает все веса > min_weight
+    for (int j = min_weight + 1; j <= max_possible_weight; ++j) {
         if (min_tax_for_weights[j] < min_tax) {
             min_tax = min_tax_for_weights[j];
             best_weight = j;
@@ -78,7 +71,6 @@ int main() {
         }
     }
 
-    // Выводим результат
     output << "Выбранные артефакты: ";
     for (int i = 0; i < art_amount; ++i) {
         if (best_selection[i]) {
@@ -89,9 +81,4 @@ int main() {
 
     output << "Суммарный вес: " << best_weight << " кг" << endl;
     output << "Общее налоговое бремя: " << min_tax << endl;
-
-    input.close();
-    output.close();
-
-    return 0;
 }
