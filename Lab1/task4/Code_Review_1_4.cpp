@@ -48,6 +48,7 @@ int main(){
 
 	if (exp.empty()) {
 		cerr << "Ошибка: Введена пустая строка." << endl;
+		return 1;
 	}
 	Exp_check(exp);
 
@@ -59,3 +60,4 @@ int main(){
 
 	return 0;
 }
+
