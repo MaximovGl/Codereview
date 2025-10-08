@@ -94,5 +94,4 @@ int Calc(const string& exp, size_t& pos){
 		pos++; 
 		return result;
 	}
-return 0
 }
