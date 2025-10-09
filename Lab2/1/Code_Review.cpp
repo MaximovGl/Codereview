@@ -24,11 +24,19 @@ int main() {
     cout << "Введите количество элементов стека: ";
     int stack_size;
     cin >> stack_size;
+    if (std::cin.fail() || stack_size <= 0) {
+        std::cerr << "Ошибка ввода: stack_size должно быть положительным целым числом." << std::endl;
+        exit(1);
+    }
 
     for (int i = 0; i < stack_size; ++i) {
         cout << "Введите элемент стека: ";
         int node_value;
         cin >> node_value;
+        if (std::cin.fail()) {
+            std::cerr << "Ошибка ввода: stack_size должно быть положительным целым числом." << std::endl;
+            exit(1);
+        }
         stack.add_node(node_value);
     }
 
@@ -38,3 +46,4 @@ int main() {
 
     return 0;
 }
+
