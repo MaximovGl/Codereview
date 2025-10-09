@@ -33,8 +33,8 @@ int main() {
         cout << "Введите элемент стека: ";
         int node_value;
         cin >> node_value;
-        if (std::cin.fail()) {
-            std::cerr << "Ошибка ввода: stack_size должно быть положительным целым числом." << std::endl;
+        if (cin.fail()) {
+            cerr << "Ошибка ввода: stack_size должно быть положительным целым числом." << std::endl;
             exit(1);
         }
         stack.add_node(node_value);
@@ -46,4 +46,5 @@ int main() {
 
     return 0;
 }
+
 
