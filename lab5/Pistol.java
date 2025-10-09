@@ -13,6 +13,7 @@ public class Pistol extends Weapon {
         this.maxbul=5;
     }
 
+    @Override
     protected void shoot(){
         if (ammo > 0){
             System.out.println("Бах!");
@@ -48,3 +49,4 @@ public class Pistol extends Weapon {
     }
 
 }
+
