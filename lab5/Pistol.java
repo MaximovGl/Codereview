@@ -13,7 +13,7 @@ public class Pistol extends Weapon {
         this.maxbul=5;
     }
 
-    void shoot(){
+    protected void shoot(){
         if (ammo > 0){
             System.out.println("Бах!");
             ammo = ammo - 1;
@@ -46,4 +46,5 @@ public class Pistol extends Weapon {
     public String toString() {
         return ("Максимальное колличество патронов: "+ maxbul+". "+"Колличество оставшихся патронов: " + ammo + ".");
     }
+
 }
