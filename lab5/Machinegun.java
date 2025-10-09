@@ -6,19 +6,19 @@ public class Machinegun extends Pistol {
     public Machinegun() {
         super(30);
         this.rateoffire = 30;
-        this.ammo = this.maxbul; // Заряжаем полную обойму
+        this.ammo = this.maxbul; 
     }
 
     public Machinegun(int maxbul) {
         super(maxbul);
         this.rateoffire = Math.max(1, maxbul / 2);
-        this.ammo = this.maxbul; // Заряжаем полную обойму
+        this.ammo = this.maxbul; 
     }
 
     public Machinegun(int maxbul, int rateoffire) {
         super(maxbul);
         this.rateoffire = rateoffire > 0 ? rateoffire : 1;
-        this.ammo = this.maxbul; // Заряжаем полную обойму
+        this.ammo = this.maxbul; 
     }
 
     public void shoot(){
@@ -47,4 +47,5 @@ public class Machinegun extends Pistol {
     public String toString() {
         return ("Максимальное колличество патронов: "+ maxbul+". "+"Колличество оставшихся патронов: " + ammo + ". Скорострельность: " + rateoffire+ ".");
     }
+
 }
