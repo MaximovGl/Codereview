@@ -33,9 +33,9 @@ abstract class Weapon {
         return currentAmmo;
     }
 
-    // Метод проверки заряженности (задание 1)
     public boolean isLoaded() {
         return ammo > 0;
     }
+
 
 }
