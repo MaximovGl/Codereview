@@ -2,7 +2,7 @@ package ru.maximov.weaponry;
 
 abstract class Weapon {
     protected int ammo;
-    public Weapon (int ammo) {
+    protected Weapon (int ammo) {
         if (ammo < 0) {
             System.out.println("Ошибка: количество патронов не может быть отрицательным");
             this.ammo = 0;
@@ -39,3 +39,4 @@ abstract class Weapon {
 
 
 }
+
