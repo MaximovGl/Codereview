@@ -33,11 +33,11 @@ public class Pistol extends Weapon {
         load(ammo,maxbul);
     }
     public int unload() {
-        return super.unload(); // Использовать метод из Weapon
+        return super.unload(); 
     }
 
     public boolean isLoaded() {
-        return super.isLoaded(); // Использовать метод из Weapon
+        return super.isLoaded(); 
     }
 
     public int getMaxCapacity() {
@@ -49,4 +49,5 @@ public class Pistol extends Weapon {
     }
 
 }
+
 
