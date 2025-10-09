@@ -10,9 +10,8 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-//FIXME библиотеки не используются
-//#include <algorithm>
-//#include <climits>
+#include <algorithm>
+#include <climits>
 
 using namespace std;
 
@@ -86,4 +85,5 @@ void CalculateArts(ifstream& input, ofstream& output) {
     output << "Суммарный вес: " << best_weight << " кг" << endl;
     output << "Общее налоговое бремя: " << min_tax << endl;
 }
+
 
